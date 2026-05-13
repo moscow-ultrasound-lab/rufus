@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;cxx;c;def</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Sources">
+      <UniqueIdentifier>{a76b4178-05b2-492e-bc2f-a20c0f7bafc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MatrixAlgorithms">
+      <UniqueIdentifier>{716057c2-143d-4cc5-8260-5b8cfe1fe82c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries">
+      <UniqueIdentifier>{a4d51eb4-d193-4aee-a781-b49051bc4eab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+    <Filter Include="S500">
+      <UniqueIdentifier>{a21e9207-51a9-4c7c-a2d8-6335da3b689e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pre.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\TestFiles.cpp">
+      <Filter>Source Files\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\libs\ap.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\blas.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\creflections.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\EigenVectorTools.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\hblas.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\hessenberg.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\hevd.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\hsschur.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\htridiagonal.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\nsevd.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\reflections.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\rotations.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\tdevd.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\GenerateFigures.cpp">
+      <Filter>Source Files\Sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\sources\AnalysisCFM.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\DopplerDataDisplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\SetOfPulses.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\SimulateSignal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CommonSources\DopplerBasics\WallFilters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\WallFiltersInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CommonSources\DopplerBasics\EMD.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CommonSources\DopplerBasics\KarhunenLoeve.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CommonSources\DopplerBasics\Analysis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\TestFiles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CommonSources\DopplerBasics\CFDataPhaseAnalyzer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ATL\Sources\RFDataImport\S500_CFMFrameSet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ATL\Sources\RFDataImport\S500_CFMParamFileData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\GenerateFigures.h">
+      <Filter>Source Files\Sources</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

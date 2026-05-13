@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\MatrixAlgorithms">
+      <UniqueIdentifier>{7f74aa68-bffb-499b-a0c5-97ae5675bb9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DopplerBasics">
+      <UniqueIdentifier>{eac520c3-2a5a-4cb3-b841-55236eb25a95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DopplerBasics\WallFilters">
+      <UniqueIdentifier>{b5879811-3d23-4a3f-b722-d8af600096ef}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ElastoGrafica.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pre.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\libs\ap.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\EigenVectorTools.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\nsevd.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\blas.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\creflections.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\hblas.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\hessenberg.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\hevd.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\hsschur.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\htridiagonal.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\reflections.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\rotations.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\MatrixAlgorithms\alglib.sources.ru\tdevd.cpp">
+      <Filter>Source Files\MatrixAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\DopplerBasics\CFM\CFDataPhaseAnalyzerCFM.cpp">
+      <Filter>Source Files\DopplerBasics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\DopplerBasics\CFDataPhaseAnalyzer.cpp">
+      <Filter>Source Files\DopplerBasics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\DopplerBasics\CFM\CFDataPhaseAnalyzerTwinkling.cpp">
+      <Filter>Source Files\DopplerBasics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\DopplerBasics\Elasto\CFDataPhaseAnalyzerElasto.cpp">
+      <Filter>Source Files\DopplerBasics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\DopplerBasics\FrameAcquisitionBuffer.cpp">
+      <Filter>Source Files\DopplerBasics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\DopplerBasics\CFM\MaskCriteria.cpp">
+      <Filter>Source Files\DopplerBasics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\DopplerBasics\Utils\NeutralizeTissueMotion.cpp">
+      <Filter>Source Files\DopplerBasics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\DopplerBasics\Utils\PhaseAnalyzerTimers.cpp">
+      <Filter>Source Files\DopplerBasics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\DopplerBasics\CFM\WallFilters\EMD.cpp">
+      <Filter>Source Files\DopplerBasics\WallFilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\DopplerBasics\CFM\WallFilters\WallFiltersInterface.cpp">
+      <Filter>Source Files\DopplerBasics\WallFilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\DopplerBasics\CFM\WallFilters\WallFilters.cpp">
+      <Filter>Source Files\DopplerBasics\WallFilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonSources\DopplerBasics\CFM\WallFilters\KarhunenLoeve.cpp">
+      <Filter>Source Files\DopplerBasics\WallFilters</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\settings\artifact_settings.ini">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>
