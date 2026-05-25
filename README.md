@@ -23,10 +23,8 @@ rufus/
 │ ├── rufus-sa/ # Synthetic aperture + aberration correction
 │ ├── rufus-doppler/ # Doppler modes (CFM, power, tissue)
 │ ├── rufus-elasto/ # Compression elastography
+│ ├── rufus-common/ # Common sources for RUFUS
 │ └── string-phantom/ # 3D ultrasound phantom generator
-├── libs/
-│ └── xrad-minimal/ # XRAD library (BSD‑3‑Clause)
-│ └── rufus-common/ # Common sources for RUFUS
 ├── LICENSE # MIT license
 └── README.md
 
