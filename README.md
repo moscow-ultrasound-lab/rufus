@@ -19,7 +19,7 @@ RUFUS is an open-source C++ framework for processing real radio‑frequency (RF)
 
 ## Repository structure
 rufus/
-├── projects/ # Main applications
+├── projects/ # Main applications /n
 │ ├── rufus-sa/ # Synthetic aperture + aberration correction
 │ ├── rufus-doppler/ # Doppler modes (CFM, power, tissue)
 │ ├── rufus-elasto/ # Compression elastography
