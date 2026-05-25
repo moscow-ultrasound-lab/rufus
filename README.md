@@ -60,8 +60,8 @@ make
 License
 RUFUS code (projects/): MIT
 
-XRAD library (libs/xrad-minimal/): BSD‑3‑Clause
-
+XRAD library: BSD‑3‑Clause
+```
 Citation
 If you use RUFUS in your research, please cite:
 
@@ -71,6 +71,7 @@ Contact
 Denis Leonov – strat89@mail.ru
 Project page: github.com/moscow-ultrasound-lab/rufus
 
+## More information
 
-
-
+For more information about this and other projects from Moscow Ultrasound Lab, please visit:
+[https://drleonov.github.io/](https://drleonov.github.io/)
