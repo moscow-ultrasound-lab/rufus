@@ -17,8 +17,8 @@ RUFUS is an open-source C++ framework for processing real radio‑frequency (RF)
 - **Real RF data support** – works with raw data from Sonomed‑500 scanners (extensible)
 - **Open source** – MIT license, C++17, CMake build
 
-```
 ## Repository structure
+```
 rufus/
 ├── projects/
 │ ├── rufus-sa/ # Synthetic aperture + aberration correction
