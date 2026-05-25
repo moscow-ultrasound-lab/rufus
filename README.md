@@ -73,5 +73,5 @@ Project page: github.com/moscow-ultrasound-lab/rufus
 
 ## More information
 
-For more information about this and other projects from Moscow Ultrasound Lab (MUSL), please visit:
+For more information about this and other projects from MUSL (Moscow Ultrasound Lab), please visit:
 [https://drleonov.github.io/](https://drleonov.github.io/)
