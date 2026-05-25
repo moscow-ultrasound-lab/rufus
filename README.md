@@ -38,6 +38,10 @@ rufus/
 - Qt (core, widgets, svg)
 - Qwt (for plots)
 
+  ## Building
+
+For detailed build instructions (dependencies, environment variables, Visual Studio setup), see [BUILD_INSTRUCTIONS.md](BUILD_INSTRUCTIONS.md).
+
 On Ubuntu:
 ```bash
 sudo apt install libqt5svg5-dev libqwt-qt5-dev
