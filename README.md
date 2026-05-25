@@ -25,8 +25,7 @@ rufus/
 │ ├── rufus-doppler/ # Doppler modes (CFM, power, tissue)
 │ ├── rufus-elasto/ # Compression elastography
 │ ├── rufus-common/ # Common sources for RUFUS
-│ ├── common/ # Shared utilities
-│ └── string-phantom/ # 3D ultrasound phantom generator
+│ └── rufus-phantom-generator/ # 3D ultrasound phantom generator
 ├── LICENSE # MIT license
 └── README.md
 ```
