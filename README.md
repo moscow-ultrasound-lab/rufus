@@ -17,7 +17,7 @@ RUFUS is an open-source C++ framework for processing real radio‑frequency (RF)
 - **Real RF data support** – works with raw data from Sonomed‑500 scanners (extensible)
 - **Open source** – MIT license, C++17, CMake build
 
-markdown
+```
 ## Repository structure
 rufus/
 ├── projects/
@@ -25,14 +25,11 @@ rufus/
 │ ├── rufus-doppler/ # Doppler modes (CFM, power, tissue)
 │ ├── rufus-elasto/ # Compression elastography
 │ ├── rufus-common/ # Common sources for RUFUS
-│ └── string-phantom/ # 3D ultrasound phantom generator
-├── libs/
 │ ├── common/ # Shared utilities
-│ └── xrad-minimal/ # XRAD library (BSD-3-Clause)
+│ └── string-phantom/ # 3D ultrasound phantom generator
 ├── LICENSE # MIT license
 └── README.md
-
-text
+```
 
 
 ## Dependencies
