@@ -7,6 +7,10 @@ RF Ultrasound Framework for Universal Simulations
 
 RUFUS is an open-source C++ framework for processing real radio‑frequency (RF) data from ultrasound scanners. It implements key imaging modes — B‑mode, color flow, power Doppler, tissue Doppler, synthetic aperture focusing, aberration correction, and compression elastography — and is designed for testing and comparing novel signal processing algorithms.
 
+## Download
+
+[⬇️ Download RUFUS Setup (Windows)](https://github.com/moscow-ultrasound-lab/rufus/releases/download/v0.1.0/RUFUS_v0.1.0_Setup.exe)
+
 ## Features
 
 - **B‑mode** – envelope detection, dynamic range compression, speckle reduction
