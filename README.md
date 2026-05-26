@@ -9,7 +9,7 @@ RUFUS is an open-source C++ framework for processing real radio‑frequency (RF)
 
 ## Download
 
-[⬇️ Download RUFUS Setup (Windows)](https://github.com/moscow-ultrasound-lab/rufus/releases/download/v0.1.0/RUFUS_v0.1.0_Setup.exe)
+[⬇️ Download RUFUS v0.1.0 Setup (Windows)](https://github.com/moscow-ultrasound-lab/rufus/releases/download/v0.1.0/RUFUS_v0.1.0_Setup.exe)
 
 ## Features
 
