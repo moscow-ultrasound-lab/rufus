@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;cxx;c;def</Extensions>
+    </Filter>
+    <Filter Include="Library">
+      <UniqueIdentifier>{5bbe7bfe-44a6-468f-a8b9-ebaa192bf3f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources XRAD">
+      <UniqueIdentifier>{a2e8f536-8a78-4645-afb9-d7aacfd90cd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="alglib">
+      <UniqueIdentifier>{45059916-7906-49b9-985f-30cb16d4bc5c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Sources\SignalProcessing\_rare_\_MediaSimulation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\ATLTaskSelector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\_rare_\Attenuator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\ColourAnalyzer\ColourAnalyzer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\ColourAnalyzer\ColourAnalyzerUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\ColourAnalyzer\ColourEncode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\_rare_\Correlator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\_rare_\AdaptiveFocusing\CurvePathfinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\ColourAnalyzer\EtalonCorrelator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\ColourAnalyzer\EtalonSetProcessing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\_rare_\AdaptiveFocusing\ExactPathfinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\GaussSignalTools.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\interpolation_many_obsolete\Interpolation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\ColourAnalyzer\LayersContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\_rare_\AdaptiveFocusing\NLPathfinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\_rare_\NoiseTwister.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\_rare_\AdaptiveFocusing\Pathfinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\_rare_\AdaptiveFocusing\PathfinderBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\ColourAnalyzer\RangeSpectrumAnalyzer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SimIOHeaders\SimIOHeaderProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\_rare_\SpeckleSuppressor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\ColourAnalyzer\SubbandAnalyzer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\ColourAnalyzer\WhiteAnalyzer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\_rare_\AdaptiveFocusing\ZPathfinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\A4000File\A4000FileHeader.cpp">
+      <Filter>Sources XRAD</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\A4000File\A4000FileReader.cpp">
+      <Filter>Sources XRAD</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\A4000File\A4000FileWriter.cpp">
+      <Filter>Sources XRAD</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\ProbeOptions\ApertureFocusingOptions.cpp">
+      <Filter>Sources XRAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\MotionAnalysis\MotionAnalysis.cpp">
+      <Filter>Sources XRAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\Utils\NonDiffraction.cpp">
+      <Filter>Sources XRAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\MotionAnalysis\NonUniformMotionAnalysis.cpp">
+      <Filter>Sources XRAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\Utils\SignalFilters.cpp">
+      <Filter>Sources XRAD</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\ProbeOptions\UltrasonicProbeOptions.cpp">
+      <Filter>Sources XRAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\MatrixAlgorithms\alglib.sources.ru\libs\ap.cpp">
+      <Filter>alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\MatrixAlgorithms\alglib.sources.ru\blas.cpp">
+      <Filter>alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\MatrixAlgorithms\alglib.sources.ru\creflections.cpp">
+      <Filter>alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\MatrixAlgorithms\EigenVectorTools.cpp">
+      <Filter>alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\MatrixAlgorithms\Bessel.alglib.ru\evd.cpp">
+      <Filter>alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\MatrixAlgorithms\alglib.sources.ru\hblas.cpp">
+      <Filter>alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\MatrixAlgorithms\alglib.sources.ru\hessenberg.cpp">
+      <Filter>alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\MatrixAlgorithms\alglib.sources.ru\hevd.cpp">
+      <Filter>alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\MatrixAlgorithms\alglib.sources.ru\hsschur.cpp">
+      <Filter>alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\MatrixAlgorithms\alglib.sources.ru\htridiagonal.cpp">
+      <Filter>alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\MatrixAlgorithms\alglib.sources.ru\nsevd.cpp">
+      <Filter>alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\MatrixAlgorithms\alglib.sources.ru\reflections.cpp">
+      <Filter>alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\MatrixAlgorithms\alglib.sources.ru\rotations.cpp">
+      <Filter>alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\MatrixAlgorithms\alglib.sources.ru\tdevd.cpp">
+      <Filter>alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\RFDataToSimIOImport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\Options.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\SectorOptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\SignalOptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\AberrationsCorrector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\BeamformerTesting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\SyntheticApertureFocuser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\SyntheticFocusingOptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\LUT_8bit_interpolator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\EntropyAnalyzer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\FrequencyCompound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\SectorData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\SignalProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SimIOHeaders\SimIOHeaders.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SimIOHeaders\SimIO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\RawSFDataSourceSimIO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\RawSFDataSourceTransEcho.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\pre.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\RawSFDataSourceINM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\SyntheticApertureFocuserAina.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\RawSFDataSourceSimulation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\PolynomialNarrowing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\DirectPhaseEstimation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\Attic\LABColorImage.cpp">
+      <Filter>Sources XRAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\RFDataImport\A4000RFDataImporter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\RFDataImport\RFDataImporter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\RFDataImport\S400_SpectromedRFDataImporter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CommonSources\BBasics\RiceBasics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Sources\SignalProcessing\RawSFDataSourceSimulation.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CommonSources\BBasics\RiceBasics.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -18,17 +18,17 @@ RUFUS is an open-source C++ framework for processing real radio‑frequency (RF)
 - **Open source** – MIT license, C++17, CMake build
 
 ## Repository structure
-```
 rufus/
-├── projects/
+├── projects/ # Main applications
 │ ├── rufus-sa/ # Synthetic aperture + aberration correction
 │ ├── rufus-doppler/ # Doppler modes (CFM, power, tissue)
 │ ├── rufus-elasto/ # Compression elastography
-│ ├── rufus-common/ # Common sources for RUFUS
-│ └── rufus-phantom-generator/ # 3D ultrasound phantom generator
+│ └── string-phantom/ # 3D ultrasound phantom generator
+├── libs/
+│ └── xrad-minimal/ # XRAD library (BSD‑3‑Clause)
+│ └── rufus-common/ # Common sources for RUFUS
 ├── LICENSE # MIT license
 └── README.md
-```
 
 
 ## Dependencies
@@ -37,11 +37,6 @@ rufus/
 - CMake (≥ 3.15)
 - Qt (core, widgets, svg)
 - Qwt (for plots)
-- XRAD
-
-  ## Building
-
-For detailed build instructions (dependencies, environment variables, Visual Studio setup), see [BUILD_INSTRUCTIONS.md](BUILD_INSTRUCTIONS.md).
 
 On Ubuntu:
 ```bash
@@ -60,8 +55,8 @@ make
 License
 RUFUS code (projects/): MIT
 
-XRAD library: BSD‑3‑Clause
-```
+XRAD library (libs/xrad-minimal/): BSD‑3‑Clause
+
 Citation
 If you use RUFUS in your research, please cite:
 
@@ -71,7 +66,6 @@ Contact
 Denis Leonov – strat89@mail.ru
 Project page: github.com/moscow-ultrasound-lab/rufus
 
-## More information
 
-For more information about this and other projects from MUSL (Moscow Ultrasound Lab), please visit:
-[https://drleonov.github.io/](https://drleonov.github.io/)
+
+
