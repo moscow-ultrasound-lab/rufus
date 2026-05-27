@@ -37,6 +37,11 @@ cmake-build-*/
 CMakeCache.txt
 CMakeFiles/
 
+ThirdPartySources/
+XRAD/
+XRADLibrariesBuild/
+XRADThirdParty/
+
 # Временные файлы
 *.tmp
 *.log
