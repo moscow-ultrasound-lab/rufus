@@ -24,6 +24,21 @@ Required XRAD modules:
 
 
 
+## HighFive Library
+
+cmd
+
+cd C:\dev
+bash
+git clone https://github.com/microsoft/vcpkg.git
+cd vcpkg
+.\bootstrap-vcpkg.bat
+bash
+.\vcpkg install highfive:x64-windows
+bash
+.\vcpkg integrate install
+Add to environment variable PATH value C:\dev\HighFive\include\highfive
+
 
 ## Environment Variables
 

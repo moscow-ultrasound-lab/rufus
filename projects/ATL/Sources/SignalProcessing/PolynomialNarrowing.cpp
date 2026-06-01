@@ -6,6 +6,7 @@
 #include "RawSFDataSourceTransEcho.h"
 #include <XRADBasic/Sources/Utils/LeastSquares.h>
 #include "PolynomialNarrowing.h"
+#include "SyntheticApertureFocuserAnalyzer.h"
 
 
 XRAD_BEGIN
@@ -99,7 +100,7 @@ void GetRayNarrowingBasis(GraphSet &errorGS, double &parametr_min, int &parametr
 
 RealFunctionF64		SyntheticApertureFocuserAina::GetLine(GraphSet &GS, int first_sample, int last_sample, int n_lines, RealFunction2D_F64 matrix_correction, RealFunctionF32 rays_corrected)
 {
-	ComplexFunction2D_F32 lines_for_correction = Focus(first_sample, last_sample, n_lines, matrix_correction, rays_corrected, *source_buffer);
+	ComplexFunction2D_F32 lines_for_correction = SectorDASFocus(first_sample, last_sample, n_lines, matrix_correction, rays_corrected, *source_buffer);
 	DisplayLines(GS, lines_for_correction, number_of_rays, n_lines, 0, scanning_sector);
 	lines_for_correction -= AverageValue(lines_for_correction);
 	RealFunctionF64 line = CalcLine(lines_for_correction, number_of_rays, n_lines);

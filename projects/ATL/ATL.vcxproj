@@ -131,6 +131,9 @@
     <ClCompile>
       <AdditionalIncludeDirectories>Sources;..\CommonSources;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseEHA|x64'">
     <ClCompile>
@@ -342,6 +345,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseEHA|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Sources\SignalProcessing\SyntheticApertureFocuser.cpp" />
+    <ClCompile Include="Sources\SignalProcessing\SyntheticApertureFocuserAnalyzer.cpp" />
     <ClCompile Include="Sources\SignalProcessing\SyntheticFocusingOptions.cpp" />
     <ClCompile Include="Sources\SignalProcessing\LUT_8bit_interpolator.cpp" />
     <ClCompile Include="Sources\SignalProcessing\EntropyAnalyzer.cpp" />
@@ -376,10 +380,13 @@
     <ClCompile Include="Sources\SimIOHeaders\SimIOHeaders.cpp" />
     <ClCompile Include="Sources\SimIOHeaders\SimIOHeaderProcessor.cpp" />
     <ClCompile Include="Sources\SimIOHeaders\SimIO.cpp" />
+    <ClCompile Include="Sources\Verasonics\RawSFDataSourceVerasonics.cpp" />
+    <ClCompile Include="Sources\Verasonics\SyntheticApertureFocuserVerasonics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CommonSources\BBasics\RiceBasics.h" />
     <ClInclude Include="Sources\SignalProcessing\RawSFDataSourceSimulation.h" />
+    <ClInclude Include="Sources\Verasonics\RawSFDataSourceVerasonics.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

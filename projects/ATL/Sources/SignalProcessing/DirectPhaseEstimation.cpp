@@ -6,6 +6,7 @@
 #include "RawSFDataSourceTransEcho.h"
 #include <XRADBasic/Sources/Utils/LeastSquares.h>
 #include "DirectPhaseEstimation.h"
+#include "SyntheticApertureFocuserAnalyzer.h"
 
 XRAD_BEGIN
 
@@ -136,7 +137,7 @@ void SyntheticApertureFocuserAina::DirectPhaseEstimation(CorrectionTraits &trait
 		if (traits.best_correction_flag) { printf("\n best_iteration"); }
 		for (size_t iteration_no = 1; iteration_no < traits.number_of_iterations; ++iteration_no, ++traits.prog)
 		{
-			ComplexFunction2D_F64 lines_for_correction = Focus(traits.first_sample, traits.last_sample, traits.n_lines, traits.matrix_correction, traits.ray_to_correct, *source_buffer);
+			ComplexFunction2D_F64 lines_for_correction = SectorDASFocus(traits.first_sample, traits.last_sample, traits.n_lines, traits.matrix_correction, traits.ray_to_correct, *source_buffer);
 			DisplayLines(traits.lineGS, lines_for_correction, number_of_rays, traits.n_lines, iteration_no, scanning_sector);
 			RearrangeLines(lines_for_correction, number_of_rays, traits.n_lines);
 			double result = DisplayLines(lineGS2, lines_for_correction, number_of_rays, traits.n_lines, iteration_no, scanning_sector);

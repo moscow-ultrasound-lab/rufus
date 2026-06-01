@@ -6,6 +6,8 @@
 #include "RawSFDataSourceTransEcho.h"
 #include "RawSFDataSourceSimulation.h"
 #include "RawSFDataSourceINM.h"
+#include "Verasonics\RawSFDataSourceVerasonics.h"
+
 
 /*
 //for reading txt files with aberration profiles
@@ -99,38 +101,74 @@ void dummy()
 
 SyntheticFocusingOptions::SyntheticFocusingOptions() :SectorData()
 {
-	size_t	answer = 1;
+	XRAD_USING
 
-//	dummy();
+		try {
 
-	//answer = Decide("Data source", {"Sim IO", "TransEcho", "INM"}, SavedGUIValue(answer));
-	answer = Decide("Data source", { "Sim IO", "TransEcho", "INM", "Simulation" }, SavedGUIValue(answer));
+		size_t	answer = 1;
 
-//	answer = 1;
-	switch(answer)
-	{
+		//	dummy();
+
+		answer = Decide("Data source", { "Sonomed", "Verasonics (HDF5)", "Simulation" }, SavedGUIValue(answer));
+
+		switch (answer)
+		{
 		case 0:
-			data_source.reset(new RawSFDataSourceSimIO);
-			break;
-		case 1:
 			data_source.reset(new RawSFDataSourceTransEcho);
 			break;
-		case 2:
-			data_source.reset(new RawSFDataSourceINM);
-			break;
+		case 1:
+		{
+			auto* verasonics = new RawSFDataSourceVerasonics;
+			// В данных с Verasonics (HDF5) могут содержаться плоские волны. Поэтому выбираем только synthetic aperture
+			if (YesOrNo("Filter to synthetic aperture only? (ignore plane waves)", true))
+			{
+				verasonics->SetTransmitType(RawSFDataSourceVerasonics::SYNTHETIC_APERTURE_ONLY);
+			}
+			data_source.reset(verasonics);
+		}
+		break;
 		case 3:
 			data_source.reset(new RawSFDataSourceSimulation);
 			break;
+		}
+
+		/*
+			answer = Decide("Data source", { "Sim IO", "Sonomed", "Verasonics", "INM", "Simulation" }, SavedGUIValue(answer));
+
+			switch(answer)
+			{
+				case 0:
+					data_source.reset(new RawSFDataSourceSimIO);
+					break;
+				case 1:
+					data_source.reset(new RawSFDataSourceTransEcho);
+					break;
+				case 2:
+					data_source.reset(new RawSFDataSourceVerasonics);
+					break;
+				case 3:
+					data_source.reset(new RawSFDataSourceINM);
+					break;
+				case 4:
+					data_source.reset(new RawSFDataSourceSimulation);
+					break;
+			}
+		*/
+		data_source->Init();
+		data_source->LoadData();
+
+
+
+		Set_Default_Options();
+		ShowOptions();
 	}
+	catch (canceled_operation&) {}
+	catch (quit_application&) {}
+	catch (...) { Error(GetExceptionString()); }
+//	return 0;
 
-	data_source->Init();
-	data_source->LoadData();
-	
-	
-
-	Set_Default_Options();
-	ShowOptions();
 }
+
 
 
 
@@ -138,7 +176,77 @@ SyntheticFocusingOptions :: ~SyntheticFocusingOptions()
 {
 }
 
+void SyntheticFocusingOptions::Set_Default_Options()
+{
+	Signal_IP_File_Name = data_source->GetFileName();
 
+	sound_speed = cm_sec(1.54e5);
+
+	n_frames = 1;
+	n_subaperture_elements_active = data_source->n_tx_elements / n_frames;
+	n_subaperture_elements_full = n_subaperture_elements_active;
+
+	n_rays = data_source->recommended_n_rays;
+	n_samples = data_source->hilbert_samples;
+	sample_rate = data_source->hilbert_signal_sample_rate;
+
+	first_sample = double(data_source->first_raw_sample) * sample_rate / data_source->raw_signal_sample_rate;
+	last_sample = double(data_source->last_raw_sample) * sample_rate / data_source->raw_signal_sample_rate;
+
+	double n_samps_per_mm_1_way = sample_rate.MHz() / data_source->sound_speed.mm_mksec();
+
+	// Проверяем, линейный ли это датчик (Verasonics)
+	auto* verasonics = dynamic_cast<RawSFDataSourceVerasonics*>(data_source.get());
+	bool is_linear = (verasonics && verasonics->IsLinearArray());
+
+	if (is_linear || data_source->recommended_angle.degrees() == 0) {
+		// ============================================================
+		// ЛИНЕЙНЫЙ ДАТЧИК (Verasonics, Philips) - прямоугольная область
+		// ============================================================
+
+		physical_length scan_width = data_source->array_pitch * data_source->n_rx_elements;
+		physical_length scan_depth = mm(0.5 * double(last_sample) / n_samps_per_mm_1_way);
+
+		SetFrameRectangle(scan_width, scan_depth);
+
+		printf("\n  Linear array configuration (rectangle):");
+		printf("\n    Scan width: %.2f mm", scan_width.mm());
+		printf("\n    Scan depth: %.2f mm", scan_depth.mm());
+
+	}
+	else {
+		// ============================================================
+		// СЕКТОРНЫЙ ДАТЧИК (Сономед) - секторная область
+		// ============================================================
+
+		physical_angle a0 = -data_source->recommended_angle;
+		physical_angle a1 = data_source->recommended_angle;
+		physical_length r0 = mm(0.5 * double(first_sample) / n_samps_per_mm_1_way);
+		physical_length r1 = mm(0.5 * double(last_sample) / n_samps_per_mm_1_way);
+
+		SetFrameSector(r0 * (a1 - a0).radians(), (r1 - r0), a0, a1);
+
+		printf("\n  Sector array configuration:");
+		printf("\n    Angle: %.1f to %.1f degrees", a0.degrees(), a1.degrees());
+		printf("\n    Depth: %.2f to %.2f mm", r0.mm(), r1.mm());
+	}
+
+	omega0 = data_source->probe_carrier;
+	band_half_width = data_source->probe_bandwidth / 2;
+	array_Pitch = data_source->array_pitch;
+
+	TX_Focus.realloc(0);
+	RX_Focus.realloc(0);
+	TX_Focus.static_direction = false;
+	sector_centre_angle = radians(0);
+
+	apodization_tx = false;
+	apodization_rx = false;
+	n_merged_elements = 1;
+	cancel_dc_offset_correction = false;
+}
+
+/*
 void	SyntheticFocusingOptions::Set_Default_Options()
 {
 	Signal_IP_File_Name = data_source->GetFileName();
@@ -199,6 +307,7 @@ void	SyntheticFocusingOptions::Set_Default_Options()
 
 	cancel_dc_offset_correction = false;
 }
+*/
 
 void	SyntheticFocusingOptions::UpdateFocusingSectorBounds()
 {

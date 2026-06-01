@@ -13,11 +13,7 @@ XRAD_BEGIN
 
 //#error continue from here
 
-double			DisplayLines(GraphSet &GS, ComplexFunction2D_F64 lines, size_t number_of_rays, size_t n_lines, size_t iteration_no, physical_angle scanning_sector);
-RealFunctionF64 CalcLine(ComplexFunction2D_F64 lines, size_t number_of_rays, size_t n_lines);
-void			SubstractLinearShift(RealFunctionF64 &phase_interpolated);
-
-
+RealFunction2D_F64	RearrangeMatrixCorrection(RealFunction2D_F64 matrix_correction, RealFunctionF32 rays_corrected, int number_of_rays);
 
 class	SyntheticApertureFocuserAina : public SyntheticApertureFocuser
 {
@@ -28,6 +24,7 @@ class	SyntheticApertureFocuserAina : public SyntheticApertureFocuser
 protected:
 	virtual void					GetAreaForCorrection(CorrectionTraits &traits);
 	virtual	void					Batch();
+	virtual	void					BatchVerasonics(RealFunction2D_F64 matrix_correction, RealFunctionF32 rays_corrected);
 	virtual	void					ChooseOption(RealFunction2D_F64 matrix_correction, RealFunctionF32 rays_corrected);
 	virtual	void					InitWork();
 	virtual	void					Sharpness(RealFunction2D_F64 &matrix_correction, RealFunctionF32 &rays_corrected);
@@ -35,7 +32,9 @@ protected:
 	virtual	void					CalculateFrameRice(RealFunction2D_F64 matrix_correction, RealFunctionF32 rays_corrected, string title);
 	virtual void					CalibrationSourceMethod(RealFunction2D_F64 &matrix_correction, RealFunction2D_F64 &best_fit_matrix_correction, RealFunctionF32 &rays_corrected, physical_angle half_scanning_sector);
 
-	virtual	ComplexFunction2D_F32	Focus(int first_sample, int last_sample, int n_lines, RealFunction2D_F64 matrix_correction, RealFunctionF32 rays_corrected, RawSFDataSource &current_source);
+	virtual	ComplexFunction2D_F32	SectorDASFocus(int first_sample, int last_sample, int n_lines, RealFunction2D_F64 matrix_correction, RealFunctionF32 rays_corrected, RawSFDataSource &current_source);
+	virtual ComplexFunction2D_F32	LinearDASFocus(int first_sample, int last_sample, int n_lines, RealFunction2D_F64 matrix_correction, RealFunctionF32 rays_corrected, RawSFDataSource& current_source);
+	virtual ComplexFunction2D_F32	PseudoConvexDASFocus(int first_sample, int last_sample, int n_lines, RealFunction2D_F64 matrix_correction, RealFunctionF32 rays_corrected, RawSFDataSource& current_source);
 	virtual	RealFunctionF64			GaussFit(double &best_fit_sq_error, RealFunctionF64 line, size_t ray_no);
 	virtual	RealFunctionF64			GetLine(GraphSet &GS, int first_sample, int last_sample, int n_lines, RealFunction2D_F64 matrix_correction, RealFunctionF32 rays_corrected);
 
@@ -43,7 +42,6 @@ protected:
 	
 public:
 	virtual void					DirectPhaseEstimation(CorrectionTraits &traits);
-	
 	virtual	void					DirectPhaseEstimationFullFrame(CorrectionTraits &traits);
 	//virtual	void					DirectPhaseEstimationFullFrame(RealFunctionF32 &rays_corrected, physical_angle half_scanning_sector, physical_angle scanning_sector, physical_angle fixed_angle_transmit, size_t number_of_rays, GUIProgressBar &prog, size_t ray_no, RealFunctionF32 &ray_to_correct, GraphSet &errorGS, GraphSet &approximationGS, GraphSet &phaseGS, GraphSet &lineGS, int iteration_number, int first_sample_to_correct, int last_sample_to_correct, int n_lines, RealFunction2D_F64 &matrix_correction, RealFunction2D_F64 &best_fit_matrix_correction, RealFunctionF32 &best_result);
 	
@@ -88,6 +86,7 @@ public:
 //	int	number_of_iterations;
 
 	double iteration_time_step;
+	double sector_angle_deg;
 
 	int number_of_receive_elements;
 	int number_of_transmit_elements;

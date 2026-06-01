@@ -282,6 +282,61 @@ physical_length SyntheticApertureFocuser::ComputeLens(physical_length element_x,
 	}
 }
 
+void SyntheticApertureFocuser::ComputePathDifferences(TimeTable& delays,
+	physical_angle angle, const aperture_focusing& focus)
+{
+	// Для линейного датчика angle всегда 0
+	// Вместо углов используем прямоугольные координаты
+
+	double direction_sine = sine(angle);
+	double direction_cosine = cosine(angle);
+
+	physical_length r0 = r_min();
+	physical_length dr = depth_range() / n_samples;
+
+	// Для линейного датчика: scanning_trajectory_length > 0, angle_range == 0
+	bool is_linear = (angle_range().radians() == 0 && scanning_trajectory_length().cm() > 0);
+
+	for (size_t sample = 0; sample < n_samples; sample++) {
+		physical_length target_r = r0 + dr * sample;
+
+		// Для линейного датчика - x координата не зависит от угла
+		physical_length target_x = is_linear ? cm(0) : target_r * direction_sine;
+		physical_length target_z = target_r * direction_cosine;
+
+		physical_length focus_r, focus_x, focus_z;
+
+		if (!focus.size()) {
+			focus_r = target_r;
+			focus_x = target_x;
+			focus_z = target_z;
+		}
+		else {
+			focus_r = focus[0];
+			focus_x = focus[0] * direction_sine;
+			focus_z = focus[0] * direction_cosine;
+		}
+
+		for (size_t i = 0; i < delays.vsize(); i++) {
+			physical_length element_x = elements_offsets[i];
+
+			if (is_linear) {
+				// Линейный датчик - прямоугольная геометрия
+				double dist_to_point = sqrt(square((target_x - element_x).cm()) + square(target_z.cm()));
+				double dist_to_focus = sqrt(square((focus_x - element_x).cm()) + square(focus_z.cm()));
+				delays.at(i, sample) = sec((dist_to_point + dist_to_focus) / data_source->sound_speed.m_sec());
+			}
+			else {
+				// Секторный датчик - оригинальная формула
+				physical_length lens = (0.5 * element_x * element_x / focus_r);
+				physical_length slope = -element_x * direction_sine;
+				delays.at(i, sample) = (target_r + lens + slope) / data_source->sound_speed;
+			}
+		}
+	}
+}
+
+/*
 void	SyntheticApertureFocuser::ComputePathDifferences(TimeTable &delays, physical_angle angle, const aperture_focusing &focus)
 {
 	double	direction_sine = sine(angle);
@@ -337,7 +392,7 @@ void	SyntheticApertureFocuser::ComputePathDifferences(TimeTable &delays, physica
 		}
 	}
 }
-
+*/
 
 void	SyntheticApertureFocuser::ComputeDelayedSignals(physical_angle angle, const TimeTable &correction_delays, const RealFunction2D_F32 &amplitude_corrections)
 {

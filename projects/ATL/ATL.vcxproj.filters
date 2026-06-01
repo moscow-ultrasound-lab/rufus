@@ -241,12 +241,24 @@
     <ClCompile Include="..\CommonSources\BBasics\RiceBasics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Verasonics\RawSFDataSourceVerasonics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SignalProcessing\SyntheticApertureFocuserAnalyzer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Verasonics\SyntheticApertureFocuserVerasonics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\SignalProcessing\RawSFDataSourceSimulation.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\CommonSources\BBasics\RiceBasics.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Verasonics\RawSFDataSourceVerasonics.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

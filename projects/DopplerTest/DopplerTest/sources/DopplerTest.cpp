@@ -14,7 +14,7 @@
 #include "DummyHypothesis.h"
 #include "SimulateSignal.h"
 //#include "BModeDetailedTest.h"
-#include <Q:\projects\CommonSources\BBasics\BModeDetailedTest.h>
+#include <BBasics\BModeDetailedTest.h>
 //#include <Q:\projects\DopplerTest\DopplerTest\sources\BModeDetailedTest.h>
 
 //#include <Q:\projects\CommonSources\BBasics\RiceBasics.h>
@@ -726,7 +726,7 @@ int xrad::xrad_main(int, char** const)
 		size_t	answer(0);
 		while (true)
 		{
-			answer = Decide("Choose source", { "Process single raw dataset", "Process several raw datasets","Process simulated signal", "Wall filter frequency response", "Test dummy hypothesis", "Exit" });
+			answer = Decide("Choose source", { "Process single raw dataset", "Process several raw datasets", "Process simulated signal", "Wall filter frequency response", "Test dummy hypothesis", "Exit" });
 			switch (answer)
 			{
 				case 0:

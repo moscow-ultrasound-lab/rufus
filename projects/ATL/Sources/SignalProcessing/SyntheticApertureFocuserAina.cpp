@@ -1,38 +1,19 @@
 ﻿#include "Pre.h"
 #include "SyntheticApertureFocuserAina.h"
+#include "SyntheticApertureFocuserAnalyzer.h"
 #include "BeamformerTesting.h"
 #include <Attic/CalculateEntropy.h>
 #include <XRADBasic/FFT2D.h>
 #include <XRADBasic/Sources/Utils/LeastSquares.h>
-
 #include "DirectPhaseEstimation.h"
 #include "PolynomialNarrowing.h"
 #include "RawSFDataSourceTransEcho.h"
 #include "RawSFDataSourceSimIO.h"
 #include "AberrationsCorrector.h"
-//#include <Q:\projects\CommonSources\BBasics\BModeDetailedTest.h>"
-#include <Q:\projects\CommonSources\BBasics\RiceBasics.h>"
-
-//for reading txt files with aberration profiles
-#include <iostream>
-#include <fstream>
-#include <string>
-//#include <charconv>
-//#include <system_error>
-#include <sstream>
-
+#include "BBasics\RiceBasics.h"
+#include "Verasonics\RawSFDataSourceVerasonics.h"
 
 XRAD_BEGIN
-/*
-SyntheticApertureFocuserAina::SyntheticApertureFocuserAina()
-{
-}
-
-SyntheticApertureFocuserAina :: ~SyntheticApertureFocuserAina()
-{
-}
-*/
-
 
 struct FocuserSettings
 {
@@ -47,10 +28,8 @@ struct FocuserSettings
 void	SyntheticApertureFocuserAina::InitWork()
 {
 	Modify_Options();
-
 	source_buffer.reset(new RawSFDataSourceTransEcho);
 	source_buffer->LoadOtherSource(source_original);
-
 	source_buffer->sound_speed = source_original.sound_speed;
 	source_buffer->raw_signal_sample_rate = source_original.raw_signal_sample_rate;
 	source_buffer->first_raw_sample = source_original.first_raw_sample;
@@ -66,31 +45,20 @@ void	SyntheticApertureFocuserAina::InitWork()
 	f0 = estimated_f0;
 	//source_buffer->Display();
 	source_buffer->HighPassFilter();	
-	
 	if (YesOrNo("Display raw data?", MakeGUIValue(false, saved_default_value))) {source_buffer->Display();}
-
  	focused_data.realloc({n_frames, n_rays, n_samples}, complexF32(0));
-
 	strcpy(SIMIO::Process_Name, "Rays focuser");
 	delayed_signals.realloc({data_source->n_tx_elements, data_source->n_rx_elements, n_samples});
-
 	SetOutputFileName(data_source->GetFileName(), "focused");
-
 	ComputeApodization();
-
 	strcpy(SIMIO::Data_Complexity, ANALYTIC);
-
 	// задаем шаг решетки в отсчетах
 	XRAD_ASSERT_THROW_M(data_source->n_tx_elements == data_source->n_rx_elements, logic_error, "Invalid array configuration");
-
 	elements_offsets.realloc(data_source->n_tx_elements);
 	TX_Delays.realloc(data_source->n_tx_elements, n_samples);
 	RX_Delays.realloc(data_source->n_rx_elements, n_samples);
-
 	ComputeElementsOffsets();
-
 //	ISignal_Write();
-
 }
 
 ComplexFunction2D_F32	CorrectDCOffset(ComplexFunction2D_F32 image)
@@ -134,8 +102,9 @@ RealFunction2D_F64	RearrangeMatrixCorrection(RealFunction2D_F64 matrix_correctio
 	return matrix_correction_new;
 }
 
-ComplexFunction2D_F32	SyntheticApertureFocuserAina::Focus(int first_sample, int last_sample, int n_lines, RealFunction2D_F64 matrix_correction, RealFunctionF32 rays_corrected, RawSFDataSource &current_source)
+ComplexFunction2D_F32	SyntheticApertureFocuserAina::SectorDASFocus(int first_sample, int last_sample, int n_lines, RealFunction2D_F64 matrix_correction, RealFunctionF32 rays_corrected, RawSFDataSource &current_source)
 {
+
 	RealFunction2D_F64 matrix_correction_new = RearrangeMatrixCorrection(matrix_correction, rays_corrected, number_of_rays);
 	ComplexFunction2D_F32 image(number_of_rays, n_lines, complexF32(0));
 	GUIProgressBar	progress;
@@ -195,206 +164,6 @@ ComplexFunction2D_F32	SyntheticApertureFocuserAina::Focus(int first_sample, int 
 	return image;
 }
 
-
-RealFunctionF64		SyntheticApertureFocuserAina::GaussFit(double &best_fit_sq_error, RealFunctionF64 line, size_t ray_no)
-{
-	best_fit_sq_error = 100;
-	double power = 0;
-	RealFunctionF64 gauss_function(number_of_rays, 0);
-	RealFunctionF64 gauss_function_best(number_of_rays, 0);
-	for (double std = 1; std < 4; std += 0.1)
-	{
-		double sq_error = 0;
-		for (size_t i = 0; i < number_of_rays; ++i)
-		{
-			gauss_function[i] = gauss(i - ray_no, std);
-			double	error = abs(line[i]) - gauss_function[i];
-			double	a(1);
-			for (int current_power = 0; current_power < power; current_power++)
-			{
-				a *= abs(int(i - ray_no));
-			}
-			sq_error += error*error*a;
-		}
-		if (best_fit_sq_error > sq_error)
-		{
-			gauss_function_best = gauss_function;
-			best_fit_sq_error = sq_error;
-		}
-	}
-	return gauss_function_best;
-}
-
-void SubstractLinearShift(RealFunctionF64 &phase_interpolated)
-{
-	RealVectorF64 coefficients(2);
-	DetectLSPolynomUniformGrid(phase_interpolated, coefficients);
-	for (int i = 0; i < phase_interpolated.size(); ++i)
-	{
-		phase_interpolated[i] -= coefficients[0] + coefficients[1] * i;
-	}
-}
-
-RealFunctionF64 CalcLine(ComplexFunction2D_F64 lines, size_t number_of_rays, size_t n_lines)
-{
-	RealFunctionF64 line(number_of_rays, 0);
-	for (int i = 0; i < number_of_rays; i++)
-	{
-		for (int j = 0; j < n_lines; j++)
-		{
-			line[i] += cabs(lines.at(i, j));
-		}
-	}
-	return line;
-}
-
-double DisplayLines(GraphSet &GS, ComplexFunction2D_F64 lines, size_t number_of_rays, size_t n_lines, size_t iteration_no, physical_angle scanning_sector)
-{
-	auto	dfi = scanning_sector / (number_of_rays - 1);
-	RealFunctionF64 line = CalcLine(lines, number_of_rays, n_lines);
-	int int_factor = 40;
-	RealFunctionF64 line_int = InterpolateRealFunctionF64(number_of_rays * int_factor, line);
-	GS.ChangeGraphUniform(iteration_no, line_int, -scanning_sector.degrees() / 2, dfi.degrees() / int_factor, ssprintf(L"#%lu", iteration_no));
-	return line_int[0];
-}
-
-void ReadTextFile(RealFunctionF32 &aberration, physical_frequency f0)
-{
-	aberration.fill(0);
-	size_t length = size(aberration);
-	string	filename = GetFileNameRead("Aberration profile file", SavedGUIValue("*.txt"), "*.txt");
-	std::ifstream file(filename, std::ios::in);
-	std::string line;
-	float x(0), y(0), z(0), i(0);
-	if (file.is_open())
-	{
-		std::cout << "File: " << filename << "\n\n";
-		while (std::getline(file, line)) {
-			std::cout << line << "\n\n";
-			std::istringstream in(line);      //make a stream for the line itself	
-			for (int i = 0; i < size(aberration); i++)
-			{
-				in >> aberration[i];			 //now read the whitespace-separated floats
-			}
-		}
-	}
-	else {
-		std::cout << "Failed to open the file";
-	}
-	file.close();
-/*
-	std::cout << "\n\nFloats\n";
-	for (int i = 0; i < size(aberration); i++)
-	{
-		std::cout << aberration[i] << " ";
-	}
-*/
-	aberration /= 180 / (1 / (2 * f0.Hz()));
-}
-
-RealFunctionF32 AddAberration(GraphSet &GS,size_t length, physical_frequency f0)
-{
-	RealFunctionF32 aberration(length, 0);
-	bool quit_cycle(false);
-	while (quit_cycle == false)
-	{
-		aberration.fill(0);
-		size_t	answer(0);
-		answer = Decide("Choose aberration", { "Chebyshev -pi+pi", "Symmetrical 0+0.8pi  - Average", "Step 0+0.8pi", "Step (-0.5-1)pi", "Step - Average", "Step 0+0.9pi", "Linear", "Comb", "Read from file" }, SavedGUIValue(answer));
-		switch (answer)
-		{
-			case 0:
-			{
-				size_t order = GetUnsigned("polynom order", MakeGUIValue(2, saved_default_value), 1, (int)length/2);
-				double magnitude = GetFloating("polynom magnitude", MakeGUIValue(0.9, saved_default_value), 0, 1) / (2 * f0.Hz());
-				aberration = PolynomBasis((int)length, order, magnitude);
-			}
-			break;
-			case 1:
-			{
-				for (int i = 0.15*length; i < 0.85*length; i++)
-				{
-					aberration[i] = 0.8 / (2 * f0.Hz());
-				}
-				aberration -= AverageValue(aberration);
-
-			}
-			break;
-			case 2:
-			{
-				for (int i = 0.75*length; i < length; i++)
-				{
-					aberration[i] = 0.8 / (2 * f0.Hz());
-				}
-			}
-			break;
-			case 3:
-			{
-				aberration.fill(-0.5 / (2 * f0.Hz()));
-				for (int i = 0.75*length; i < length; i++)
-				{
-					aberration[i] = -1 / (2 * f0.Hz());
-				}
-			}
-			break;
-			case 4:
-			{
-				for (int i = 0; i < 0.25*length; i++)
-				{
-					aberration[i] = 1 / (2 * f0.Hz());
-				}
-			}
-			aberration -= AverageValue(aberration);
-			break;
-			case 5:
-			{
-				for (int i = 0.75*length; i < length; i++)
-				{
-					aberration[i] = 0.9 / (2 * f0.Hz());
-				}
-			}
-			break;
-			case 6:
-				{
-					physical_angle delta = degrees(GetFloating("Choose phase difference in degrees between the first and the last elements", MakeGUIValue(0, saved_default_value), 0, 1e3));
-					for (int i = 0; i < length; i++)
-						 {
-						aberration[i] = i * delta.degrees() / ((length - 1) * 2 * 180 * f0.Hz());
-						}
-					aberration -= AverageValue(aberration);
-					}
-				break;
-			case 7:
-			{
-				int j(0);
-				aberration.fill(0);
-				for (int i = 0; i < length; i++)
-				{
-					if (i>(j*double(length) / 10))
-					{
-						aberration[i] = 0.8 / (2 * f0.Hz());
-					}
-					if (i > ((j+0.25)*double(length) / 10))
-					{
-						j++;
-					}
-				}
-				aberration -= AverageValue(aberration);
-			}
-			case 8:
-			{
-				ReadTextFile(aberration, f0);
-			}
-			break;
-		}
-		GS.ChangeGraphUniform(0, aberration*(180/(1 / (2 * f0.Hz()))), -double(length / 2.), 1, "Given");
-		GS.SetScale(range2_F64(-180, -double(length/2.), 180, double(length/2.)));
-		GS.Display(false);
-		if (YesOrNo("Use this aberration?", MakeGUIValue(false, saved_default_value))) { quit_cycle = true; }
-	}
-	return aberration;
-}
-
 void DisplayCorrection(RealFunction2D_F64 best_fit_matrix_correction, RealFunctionF32 rays_corrected)
 {
 	size_t nuber_of_rays = best_fit_matrix_correction.vsize();
@@ -434,7 +203,6 @@ void SyntheticApertureFocuserAina::Sharpness(RealFunction2D_F64 &matrix_correcti
 	CorrectionTraits	traits(number_of_transmit_elements, number_of_rays);
 	traits.rays_corrected.MakeCopy(rays_corrected);
 	traits.matrix_correction.MakeCopy(matrix_correction);
-
 
 	GraphSet	errorGS(L"Error", L"value", L"amp");
 	GraphSet	approximationGS(L"Polynom", L"value", L"element number");
@@ -487,9 +255,7 @@ void SyntheticApertureFocuserAina::Sharpness(RealFunction2D_F64 &matrix_correcti
 			case 0:
 			{
 					traits.min_error.MakeCopy(min_error);
-					
 					PolynomialNarrowing(traits);
-
 					min_error.MakeCopy(traits.min_error);
 			}
 			break;
@@ -500,9 +266,7 @@ void SyntheticApertureFocuserAina::Sharpness(RealFunction2D_F64 &matrix_correcti
 				traits.fixed_angle_transmit = fixed_angle_transmit;
 				traits.number_of_rays = number_of_rays;
 				traits.best_result.MakeCopy(best_result);
-
 				DirectPhaseEstimationFullFrame(traits);
-
 				best_result.MakeCopy(traits.best_result);
 			}
 			break;
@@ -536,102 +300,15 @@ void SyntheticApertureFocuserAina::Sharpness(RealFunction2D_F64 &matrix_correcti
 	}
 }
 
-void CaclAandSTD(ComplexFunction2D_F32 image, double half_sector)
-{
-	if (YesOrNo("Calculate A, STD and FWHM?", MakeGUIValue(true, saved_default_value)))
-	{
-		do
-		{
-			
-		size_t sample_number = GetSigned("Choose sample", MakeGUIValue(0, saved_default_value), 0, image.sizes(1));
-		size_t std_range(14);// = GetSigned("STD range in beams", MakeGUIValue(0, saved_default_value), 0, image.sizes(0));  //в статье Фурье и Полиномы этот параметр равен 14, что соответствует +-5 градусам
-		double max(0), std(0);
-		size_t coord_max(0);
-		RealFunctionF64 line(image.sizes(0), 0);
-		for (int i = 0; i < image.sizes(0); i++)
-		{
-			line[i] = cabs(image.at(i, sample_number));
-			if (max < cabs(image.at(i, sample_number)))
-			{
-				max = cabs(image.at(i, sample_number));
-				coord_max = i;
-			}
-		}
 
-
-
-		double half_max(max / 2), FWHM_1(0), FWHM_2(0);
-		size_t coord_half_max_left_1(0), coord_half_max_left_2(0), coord_half_max_right_1(0), coord_half_max_right_2(0);
-		for (int i = 1; i < image.sizes(0); i++)
-		{
-			if (coord_half_max_left_1 == 0)
-			{
-				if ((line[i-1] < half_max) && (line[i] >= half_max))
-				{
-					coord_half_max_left_1 = i;
-				}
-			}
-			if (i < coord_max)
-			{
-				if ((line[i - 1] < half_max) && (line[i] >= half_max))
-				{
-					coord_half_max_left_2 = i;
-				}
-			}
-			
-			if ((line[i - 1] > half_max) && (line[i] <= half_max))
-			{
-				coord_half_max_right_1 = i;
-			}
-		}
-
-
-		for (int i = image.sizes(0); i > 0; i--)
-		{
-			if (i > coord_max)
-			{
-				if ((line[i - 1] > half_max) && (line[i] <= half_max))
-				{
-					coord_half_max_right_2 = i;
-				}
-			}
-		}
-		 
-
-		FWHM_1 = (coord_half_max_right_1 - coord_half_max_left_1) * 90/ image.sizes(0);
-		FWHM_2 = (coord_half_max_right_2 - coord_half_max_left_2) * 90 / image.sizes(0);
-
-
-		double numerator(0), denominator(0), ph(0), ph_max(0);
-		//double numerator_ph(0);
-		if (CapsLock()) { coord_max = GetSigned("Enter coordinate max", MakeGUIValue(0, saved_default_value), 0, image.sizes(0));}
-		RealFunctionF64 line_norm(line/ max);
-		double phase_position_max = half_sector * (-1 + double(coord_max) * 2 / double(image.sizes(0)));
-		for (int i = (coord_max - std_range/2); i < (1+coord_max + std_range / 2); i++)
-		{
-			ph = half_sector*(-1 + double(i) * 2 / double(image.sizes(0)));
-			ph_max = ph - phase_position_max;
-			//numerator_ph += ph_max * ph_max;
-			numerator += line_norm[i]* ph_max * ph_max;
-			denominator += line_norm[i];
-		}
-		std = sqrt(numerator / denominator);
-
-		//DisplayMathFunction(line, 0, 1, ssprintf(L"Sample #%lu, STD range = %lu, coord_max = %lu, A = %g, STD = %g, phposmax = %g, denom=%g, numerator_ph=%g, num=%g", sample_number, std_range, coord_max, max, std, phase_position_max, denominator, numerator_ph, numerator));
-		DisplayMathFunction(line, 0, 1, ssprintf(L"Sample #%lu, A = %g, STD = %g, left %lu, right %lu, FWHM = %g deg, left %lu, right %lu, FWHM = %g deg", sample_number, line[coord_max], std, coord_half_max_left_1, coord_half_max_right_1, FWHM_1, coord_half_max_left_2, coord_half_max_right_2, FWHM_2));
-		} while (YesOrNo("Calculate for another sample?", MakeGUIValue(true, saved_default_value)));
-	}
-}
 
 void	SyntheticApertureFocuserAina::DisplayFrame(RealFunction2D_F64 matrix_correction, RealFunctionF32 rays_corrected, string title)
 {
 	dynamic_focal_angle_transmit = YesOrNo("dynamic_focal_angle_transmit", MakeGUIValue(true, saved_default_value));
-	
 	if (dynamic_focal_angle_transmit == false)
 	{
 		fixed_angle_transmit = degrees(GetFloating("Choose transmit angle in degrees", MakeGUIValue(0, saved_default_value), -half_scanning_sector.degrees(), half_scanning_sector.degrees()));
 	}
-	
 	img.realloc(number_of_rays, samples, complexF32(0));
 	calculate_phase_correction = false;
 	apply_phase_correction = false;
@@ -641,55 +318,20 @@ void	SyntheticApertureFocuserAina::DisplayFrame(RealFunction2D_F64 matrix_correc
 	first_sample_to_correct = 0;
 	last_sample_to_correct = samples;
 	n_lines = last_sample_to_correct - first_sample_to_correct;
-	
 	index_vector	frame_sizes({ size_t(number_of_frames), size_t(number_of_rays), size_t(samples) });
 	ComplexFunction2D_F32 image;
-
-	image = Focus(first_sample_to_correct, last_sample_to_correct, n_lines, matrix_correction, rays_corrected, source_original);
-		
+	image = SectorDASFocus(first_sample_to_correct, last_sample_to_correct, n_lines, matrix_correction, rays_corrected, source_original);
 	ScanConverterOptions sco(ScanFrameSector(start_depth * degrees(scanning_sector.degrees()).radians(), 2 * step_depth * n_lines, -half_scanning_sector, half_scanning_sector));
-
 	ComplexFunction2D_F32 image_blured;
 	image_blured = CorrectDCOffset(image);
 	DisplayMathFunction2D(image_blured, title, sco);
-
 	CaclAandSTD(image, half_scanning_sector.degrees());
 }
 
 
-void	SyntheticApertureFocuserAina::CalculateFrameRice(RealFunction2D_F64 matrix_correction, RealFunctionF32 rays_corrected, string title)
-{
-	dynamic_focal_angle_transmit = true;
-	img.realloc(number_of_rays, samples, complexF32(0));
-	calculate_phase_correction = false;
-	apply_phase_correction = false;
-	int		first_sample_to_correct(0);
-	int		last_sample_to_correct(samples);
-	int		n_lines(last_sample_to_correct - first_sample_to_correct);
-
-	index_vector	frame_sizes({ size_t(number_of_frames), size_t(number_of_rays), size_t(samples) });
-	ComplexFunctionMD_F32 images(frame_sizes, complexF32(0));
-	ComplexFunction2D_F32 image;
-
-	for (current_frame_no = 0; current_frame_no < size_t(number_of_frames); ++current_frame_no)
-	{
-		image = Focus(first_sample_to_correct, last_sample_to_correct, n_lines, matrix_correction, rays_corrected, source_original);
-		images.GetSlice({ size_t(current_frame_no), slice_mask(0), slice_mask(1) }).CopyData(image);
-	}
-
-	ScanConverterOptions sco(ScanFrameSector(start_depth * degrees(scanning_sector.degrees()).radians(), 2 * step_depth * n_lines, -half_scanning_sector, half_scanning_sector));
-	BModeRiceTestSyntheticAperture(images, sco);
-}
-
 void	SyntheticApertureFocuserAina::ChooseOption(RealFunction2D_F64 matrix_correction, RealFunctionF32 rays_corrected)
 {
-
-	enum
-	{
-		correct_aberrations,
-		calculate_rice,
-		display_exit
-	} option;
+	enum {correct_aberrations, calculate_rice, display_exit} option;
 	while (true)
 	{
 		option = GetButtonDecision("Choose option",
@@ -702,27 +344,16 @@ void	SyntheticApertureFocuserAina::ChooseOption(RealFunction2D_F64 matrix_correc
 		{
 			switch (option)
 			{
-
 				case correct_aberrations:
 				{
-					if (YesOrNo("Display frame before correction?", MakeGUIValue(false, saved_default_value))) 
-					{ 
-						DisplayFrame(matrix_correction, rays_corrected, "Before"); 
-					}
 					Sharpness(matrix_correction, rays_corrected);
 					if (YesOrNo("Display frame?", MakeGUIValue(false, saved_default_value))) 
-					{ 
-						DisplayFrame(matrix_correction, rays_corrected, "After"); 
-					}
+					DisplayFrame(matrix_correction, rays_corrected, "After"); 
 				}
 				break;
-
 				case calculate_rice:
-				{
-					CalculateFrameRice(matrix_correction, rays_corrected, "Rice");
-				}
+				CalculateFrameRice(matrix_correction, rays_corrected, "Rice");
 				break;
-
 				default:
 					throw canceled_operation("");
 			}
@@ -733,6 +364,52 @@ void	SyntheticApertureFocuserAina::ChooseOption(RealFunction2D_F64 matrix_correc
 	}
 }
 
+/*
+void SyntheticApertureFocuserAina::Batch()
+{
+	bool display_raw_data(false);
+	if (display_raw_data == true) { data_source->Display(); }
+
+	number_of_receive_elements = (int)source_original.n_rx_elements;
+	number_of_transmit_elements = (int)source_original.n_tx_elements;
+	number_of_frames = source_original.n_frames;
+	aperture_width = number_of_transmit_elements * (data_source->array_pitch);
+	number_of_rays = 128;
+	samples = (int)source_original.samples_per_element / 2;
+	pitch = source_original.array_pitch;
+	auto sample_rate = source_original.raw_signal_sample_rate / 2;
+	step_depth = 0.5 * source_original.sound_speed / sample_rate;
+	start_depth = 0.5 * (int)source_original.first_raw_sample * source_original.sound_speed / source_original.raw_signal_sample_rate;
+	// ============================================================
+	// ОПРЕДЕЛЯЕМ ТИП ДАТЧИКА ДЛЯ scanning_sector
+	// ============================================================
+	auto* verasonics = dynamic_cast<RawSFDataSourceVerasonics*>(&source_original);
+	bool is_linear = (verasonics && verasonics->IsLinearArray());
+
+	if (is_linear) {
+		BatchVerasonics();
+	}
+	else {
+		scanning_sector = degrees(90);
+		half_scanning_sector = scanning_sector / 2;
+		dfi = scanning_sector / number_of_rays;
+	}
+	printf("\n  Scanning sector: %.1f degrees, is_linear: %d", scanning_sector.degrees(), is_linear);
+	RealFunction2D_F64 matrix_correction(number_of_rays, number_of_transmit_elements, 0);
+	RealFunctionF32 rays_corrected(number_of_rays, -1);
+	// ============================================================
+	// ТЕСТ DAS БИМФОРМИНГА
+	// ============================================================	
+	if (!is_linear)
+	{
+		if (YesOrNo("Display frame?", MakeGUIValue(false, saved_default_value)))
+		{
+			DisplayFrame(matrix_correction, rays_corrected, "Frame");
+		}
+	}
+	ChooseOption(matrix_correction, rays_corrected);
+}
+*/
 
 void	SyntheticApertureFocuserAina::Batch()
 {
@@ -748,10 +425,30 @@ void	SyntheticApertureFocuserAina::Batch()
 	auto	sample_rate = source_original.raw_signal_sample_rate / 2;
 	step_depth = 0.5*source_original.sound_speed / sample_rate;
 	start_depth = 0.5*(int)source_original.first_raw_sample*source_original.sound_speed / source_original.raw_signal_sample_rate;
+
+	//pitch = pitch * 0.0001;
+//pitch = pitch * 0.000000001;
+
+	//printf("\n\n scanning_sector=%g", 180 * scanning_sector / pi());
+	//scanning_sector = scanning_sector * (GetFloating("Choose scanning_sector (scanning_sector * coef)", MakeGUIValue(0, saved_default_value), 0, 1));
+	//printf("\n New scanning_sector=%g", 180 * scanning_sector / pi());
+
 	dfi = scanning_sector / number_of_rays;
 	RealFunction2D_F64 matrix_correction(number_of_rays, number_of_transmit_elements, 0);
 	RealFunctionF32 rays_corrected(number_of_rays, -1);
+
+	auto* verasonics = dynamic_cast<RawSFDataSourceVerasonics*>(&source_original);
+	bool is_linear = (verasonics && verasonics->IsLinearArray());
+	if (is_linear) {
+		BatchVerasonics(matrix_correction, rays_corrected);
+	}
+
+	if (YesOrNo("Display frame?", MakeGUIValue(false, saved_default_value)))
+	{
+		DisplayFrame(matrix_correction, rays_corrected, "Frame");
+	}
 	ChooseOption(matrix_correction, rays_corrected);
 }
+
 
 XRAD_END
