@@ -37,6 +37,7 @@ rufus/
 - CMake (≥ 3.15)
 - Qt (core, widgets, svg)
 - Qwt (for plots)
+- HighFive (for *.hdf5 files with Verasonics RF data)
 
 On Ubuntu:
 ```bash
