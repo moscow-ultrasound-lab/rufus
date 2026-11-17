@@ -1,0 +1,102 @@
+#ifndef AnisotropicFilter1D_h__
+#define AnisotropicFilter1D_h__
+
+/********************************************************************
+	created:	2016/11/14
+	created:	14:11:2016   14:34
+	file base:	AnisotropicFilterTester
+	file ext:	h
+	author:		kns
+	
+	purpose:	
+*********************************************************************/
+
+#include <MathFunctionTypes2D.h>
+#include "AnisotropicFilterParams.h"
+
+BEGIN_NAMESPACE_QM
+
+class AnisotropicFilter1D : public AnisotropicFilterParams
+{
+public:
+	typedef RealFunctionF32	function_t;
+
+	enum e_filter_sides
+	{
+		e_left,
+		e_right,
+		e_original
+	};
+	double components_number;
+	std::vector<string> filter_names;
+	function_t	priority_vector;
+	size_t graph_size;
+	function_t original;
+
+	function_t	blured_left, blured_right;
+	function_t slightly_blured_original;
+	RealFunction2D_F32 components_all;
+
+
+	function_t slightly_blured_cleared;
+
+	function_t post_difference_left;
+	function_t post_difference_right;
+	function_t post_differences_sum;
+	function_t post_sides_difference;
+	function_t	post_blured_left, post_blured_right;
+
+	//criteria
+	function_t difference_left;
+	function_t difference_right;
+	RealFunction2D_F32 difference_all;
+
+	function_t differences_sum;
+	function_t sides_difference;
+
+
+
+	function_t mask_left, mask_right, mask_original;
+	RealFunction2D_F32 mask_all;
+
+	//result
+	function_t combined;
+
+<<<<<<< local
+=======
+// 	GraphSet masks_gs;
+// 	GraphSet blur_result_gs;
+// 	GraphSet differences_gs;
+// 	GraphSet result_gs;
+// 	GraphSet parametric_gs;
+
+>>>>>>> other
+
+public:
+	AnisotropicFilter1D();
+	void	SetSampleSize(size_t in_size);
+	void	LoadFunction(const function_t &f);
+	void	Apply(function_t &f, algorithm_type_t &algorithm_type);
+	void	InitNames();
+
+	void	ComputePrincipalComponents();
+	void	ComputeComparedComponents();
+	void	ComputeClearedSignal0();
+	void	ComputeClearedSignal_LeftRight();
+	void	ComputeClearedSignal_Hyperbola();
+	void	ComputeClearedSignal_Cross();
+
+	void	Show2DComponents();
+
+// 	void	ShowBlurResult(bool stop);
+// 	void	ShowDifferences(bool stop);
+// 	void	ShowMasks(bool stop);
+// 	void	ShowClearedSignal(bool stop);
+	void	ApplyAlgorithmType(algorithm_type_t &algorithm_type);
+	
+	friend class AnisotropicFilterDisplayer;//отладочный класс, только так
+};
+
+END_NAMESPACE_QM
+
+#endif // AnisotropicFilter1D_h__

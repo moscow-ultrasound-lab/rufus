@@ -145,7 +145,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>Q:\XRAD;C:\QWT\6.1.5\VS2015\Qt5.15.2-x64\include;C:\Qt\5.15.2\msvc2015_64\include;C:\QWT\6.1.5\VS2015\Qt5.15.2-x64\lib\;C:\Qt\5.15.2\msvc2019_64\lib;C:\QWT\6.1.5\VS2019\Qt5.15.2-x86\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)XRAD;C:\QWT\6.1.5\VS2015\Qt5.15.2-x64\include;C:\Qt\5.15.2\msvc2015_64\include;C:\QWT\6.1.5\VS2015\Qt5.15.2-x64\lib\;C:\Qt\5.15.2\msvc2019_64\lib;C:\QWT\6.1.5\VS2019\Qt5.15.2-x86\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -153,7 +153,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>qwt.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\QWT\6.1.5\VS2015\Qt5.15.2-x64;QWTDIR5x64;Q:\XRADInstall\lib\MSVC2019\x64-Release;$(XRADThirdParty)\vld\lib\$(PlatformTarget);$(XRAD_LibDir);$(XRAD_CommonLibDir);$(QWTDIR_P)\lib;$(QTDIR_P)\lib;Q:\lib\x64-Release-2019;Q:\XRAD\lib\x64-Release-2019;C:\QWT\6.1.5\VS2015\Qt5.15.2-x64\lib;C:\Qt\5.15.2\msvc2015_64\lib;Q:\lib\x64-Release\;Q:\lib\x64-Release-2019\;$(SolutionDir)lib\$(Platform)-$(Configuration)-2019\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\QWT\6.1.5\VS2015\Qt5.15.2-x64;QWTDIR5x64;$(SolutionDir)XRADInstall\lib\MSVC2019\x64-Release;$(XRADThirdParty)\vld\lib\$(PlatformTarget);$(XRAD_LibDir);$(XRAD_CommonLibDir);$(QWTDIR_P)\lib;$(QTDIR_P)\lib;$(SolutionDir)lib\x64-Release-2019;$(SolutionDir)XRAD\lib\x64-Release-2019;C:\QWT\6.1.5\VS2015\Qt5.15.2-x64\lib;C:\Qt\5.15.2\msvc2015_64\lib;$(SolutionDir)lib\x64-Release\;$(SolutionDir)lib\x64-Release-2019\;$(SolutionDir)lib\$(Platform)-$(Configuration)-2019\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -164,13 +164,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rufus-main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="rufus-main.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="rufus-main.ico" />
-    <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

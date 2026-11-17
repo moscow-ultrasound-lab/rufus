@@ -1,0 +1,105 @@
+cmake_minimum_required(VERSION 3.23)
+
+project(beamformer)
+
+if(MSVC)
+	add_compile_options(/bigobj)
+endif()
+
+add_executable(beamformer app.rc)
+
+target_sources(beamformer
+	PRIVATE
+		../rufus-common-sources/BBasics/RiceBasics.cpp
+		../rufus-common-sources/Attic/LABColorImage.cpp
+		../rufus-common-sources/MatrixAlgorithms/alglib.sources.ru/blas.cpp
+		../rufus-common-sources/MatrixAlgorithms/alglib.sources.ru/creflections.cpp
+		../rufus-common-sources/MatrixAlgorithms/alglib.sources.ru/hblas.cpp
+		../rufus-common-sources/MatrixAlgorithms/alglib.sources.ru/hessenberg.cpp
+		../rufus-common-sources/MatrixAlgorithms/alglib.sources.ru/hevd.cpp
+		../rufus-common-sources/MatrixAlgorithms/alglib.sources.ru/hsschur.cpp
+		../rufus-common-sources/MatrixAlgorithms/alglib.sources.ru/htridiagonal.cpp
+		../rufus-common-sources/MatrixAlgorithms/alglib.sources.ru/libs/ap.cpp
+		../rufus-common-sources/MatrixAlgorithms/alglib.sources.ru/nsevd.cpp
+		../rufus-common-sources/MatrixAlgorithms/alglib.sources.ru/reflections.cpp
+		../rufus-common-sources/MatrixAlgorithms/alglib.sources.ru/rotations.cpp
+		../rufus-common-sources/MatrixAlgorithms/alglib.sources.ru/tdevd.cpp
+		../rufus-common-sources/MatrixAlgorithms/EigenVectorTools.cpp
+		../rufus-common-sources/RFDataImport/A4000RFDataImporter.cpp
+		../rufus-common-sources/RFDataImport/RFDataImporter.cpp
+		../rufus-common-sources/RFDataImport/S400_SpectromedRFDataImporter.cpp
+		../rufus-common-sources/ProbeOptions/ApertureFocusingOptions.cpp
+		../rufus-common-sources/ProbeOptions/UltrasonicProbeOptions.cpp
+		../rufus-common-sources/Utils/NonDiffraction.cpp
+		../rufus-common-sources/Utils/SignalFilters.cpp
+		sources/A4000File/A4000FileHeader.cpp
+		sources/A4000File/A4000FileReader.cpp
+		sources/A4000File/A4000FileWriter.cpp
+		sources/CUBDL/RawSFDataSourceCUBDL.cpp
+		sources/PICMUS/PlaneWaveFocuserPICMUS.cpp
+		sources/PICMUS/RawSFDataSourcePICMUS.cpp
+		sources/pre.cpp
+		sources/ATLTaskSelector.cpp
+		sources/interpolation_many_obsolete/Interpolation.cpp
+		sources/SignalProcessing/ColourAnalyzer/ColourAnalyzer.cpp
+		sources/SignalProcessing/ColourAnalyzer/ColourAnalyzerUtils.cpp
+		sources/SignalProcessing/ColourAnalyzer/ColourEncode.cpp
+		sources/SignalProcessing/ColourAnalyzer/EtalonCorrelator.cpp
+		sources/SignalProcessing/ColourAnalyzer/EtalonSetProcessing.cpp
+		sources/SignalProcessing/ColourAnalyzer/LayersContainer.cpp
+		sources/SignalProcessing/ColourAnalyzer/RangeSpectrumAnalyzer.cpp
+		sources/SignalProcessing/ColourAnalyzer/WhiteAnalyzer.cpp
+		sources/SignalProcessing/DirectPhaseEstimation.cpp
+		sources/SignalProcessing/GaussSignalTools.cpp
+		sources/SignalProcessing/PolynomialNarrowing.cpp
+		sources/SignalProcessing/RawSFDataSourceINM.cpp
+		sources/SignalProcessing/RawSFDataSourceSimIO.cpp
+		sources/SignalProcessing/RawSFDataSourceSimulation.cpp
+		sources/SignalProcessing/RawSFDataSourceTransEcho.cpp
+		sources/SignalProcessing/RFDataToSimIOImport.cpp
+		sources/SignalProcessing/SpeedOfSoundEstimation.cpp
+		sources/SignalProcessing/SyntheticApertureFocuserSectorProbe.cpp
+		sources/SignalProcessing/Options.cpp
+		sources/SignalProcessing/SectorOptions.cpp
+		sources/SignalProcessing/SignalOptions.cpp
+		sources/SignalProcessing/AberrationsCorrector.cpp
+		sources/SignalProcessing/SyntheticApertureFocuser.cpp
+		sources/SignalProcessing/SyntheticApertureFocuserAnalyzer.cpp
+		sources/SignalProcessing/SyntheticFocusingOptions.cpp
+		sources/SignalProcessing/LUT_8bit_interpolator.cpp
+		sources/SignalProcessing/EntropyAnalyzer.cpp
+		sources/SignalProcessing/FrequencyCompound.cpp
+		sources/SignalProcessing/SectorData.cpp
+		sources/SignalProcessing/SignalProcessor.cpp
+		sources/SignalProcessing/_rare_/AdaptiveFocusing/CurvePathfinder.cpp
+		sources/SignalProcessing/_rare_/AdaptiveFocusing/ExactPathfinder.cpp
+		sources/SignalProcessing/_rare_/AdaptiveFocusing/NLPathfinder.cpp
+		sources/SignalProcessing/_rare_/AdaptiveFocusing/Pathfinder.cpp
+		sources/SignalProcessing/_rare_/AdaptiveFocusing/PathfinderBase.cpp
+		sources/SignalProcessing/_rare_/AdaptiveFocusing/ZPathfinder.cpp
+		sources/SignalProcessing/_rare_/Attenuator.cpp
+		sources/SignalProcessing/_rare_/NoiseTwister.cpp
+		sources/SignalProcessing/_rare_/SpeckleSuppressor.cpp
+		sources/SimIOHeaders/SimIOHeaders.cpp
+		sources/SimIOHeaders/SimIOHeaderProcessor.cpp
+		sources/SimIOHeaders/SimIO.cpp
+		sources/UlaOp/RawSFDataSourceUlaOp.cpp
+		sources/UlaOp/SyntheticApertureFocuserDebug.cpp
+		sources/Verasonics/RawSFDataSourceVerasonics.cpp
+		sources/Verasonics/RawSFDataSourceVerasonicsMat.cpp
+		sources/Verasonics/SyntheticApertureFocuserLinearProbe.cpp
+)
+
+target_include_directories(beamformer
+    PRIVATE
+		sources
+		../rufus-common-sources
+		$ENV{XRADRoot}
+)
+
+target_link_directories(beamformer
+    PRIVATE
+		../../XRADInstall/lib/MSVC2019/x64-Debug
+		$ENV{QTDIR5x64}/lib
+		$ENV{QWTDIR5x64}/lib
+)

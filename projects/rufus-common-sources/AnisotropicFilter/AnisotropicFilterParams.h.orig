@@ -1,0 +1,85 @@
+#ifndef AnisotropicFilterParams_h__
+#define AnisotropicFilterParams_h__
+
+/********************************************************************
+	created:	2016/11/14
+	created:	14:11:2016   14:37
+	filename: 	q:\programs\AnisotropicFilterTest\AnisotropicFilterTest\sources\AnisotropicFilterParams.h
+	file path:	q:\programs\AnisotropicFilterTest\AnisotropicFilterTest\sources
+	file base:	AnisotropicFilterParams
+	file ext:	h
+	author:		kns
+	
+	purpose:	
+*********************************************************************/
+
+<<<<<<< local
+#include <MathFunctionTypes.h>
+=======
+#include <MathFunctionTypesMD.h>
+>>>>>>> other
+
+BEGIN_NAMESPACE_QM
+
+enum algorithm_type_t
+{
+	e_algorithm_left_right,
+	e_algorithm_cross,
+	e_algorithm_hyperbola,
+	e_no_algorithm
+};
+
+class compare_functor
+{
+private:
+	const double threshold;
+	double fuzziness;
+	double diff(double difference_value)const
+	{
+			return (threshold - fabs(difference_value))/threshold;
+	}
+
+public:
+	compare_functor(double &in_threshold, double &in_fuzziness) :threshold(in_threshold), fuzziness(in_fuzziness){};
+	template<class T1, class T2>
+	void operator() (T1 &mask_value, const T2 difference_value) const
+	{
+		mask_value = range((diff(difference_value)) / (fuzziness), 0, 1);
+	}
+};
+
+
+struct AnisotropicFilterParams
+{
+	double compare_filter_radius;
+	double main_filter_radius;
+
+	double main_filter_factor;
+	double compare_filter_factor;
+
+	double step_der;
+	double step_diff;
+	double large_step;
+	double condition_01;
+	double condition_02;
+	double condition_03;
+	double condition_04;
+
+	double	noise_threshold1;
+	double	fuzziness;
+	double	noise_threshold2;
+	double	noise_threshold3;
+
+	AnisotropicFilterParams();
+
+	void	SetNoiseThreshold(double in_threshold, double in_fuzziness);
+	void	SetMainFilterRadius(double in_radius);
+	void	GetAlgorithmType(algorithm_type_t &algorithm_type);
+	double	ComputeCombinedImage(RealFunctionF32 &components, RealFunctionF32 &masks);
+	void	ComputeMasksRow(RealFunctionF32 &difference, RealFunctionF32 &masks, RealFunctionF32 &priorities);
+};
+
+
+END_NAMESPACE_QM
+
+#endif // AnisotropicFilterParams_h__
